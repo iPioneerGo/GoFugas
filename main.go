@@ -11,6 +11,8 @@ type user struct {
 	email string
 }
 
+var usersMap = map[int]user{}
+
 func (u user) String() string {
 	return fmt.Sprintf(""+
 		"{\n"+
@@ -21,11 +23,19 @@ func (u user) String() string {
 }
 
 func searchAndPrint(users []user, name string) {
-	for _, user := range users {
-		if strings.ToLower(user.name) == strings.ToLower(name) {
+	serviceMap := convertUsersSliceToMap(users, usersMap)
+	for _, user := range serviceMap {
+		if strings.EqualFold(user.name, name) {
 			fmt.Println(user)
 		}
 	}
+}
+
+func convertUsersSliceToMap(users []user, usersMap map[int]user) map[int]user {
+	for i := range users {
+		usersMap[i] = users[i]
+	}
+	return usersMap
 }
 
 func main() {
